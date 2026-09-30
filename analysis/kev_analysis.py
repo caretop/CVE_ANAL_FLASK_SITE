@@ -81,19 +81,18 @@ def _load_from_mongo(uri, db_name, collection_name):
 
 
 def load_raw_dataframe():
-    """MongoDB is the primary source; the CSV in data/ is used as a backup
-    whenever Mongo is not running or the collection hasn't been seeded yet
-    (desktop-friendly: no Mongo setup required just to try the app)."""
-    if Config.DATA_SOURCE == "csv":
-        df = _load_from_csv(Config.CSV_PATH)
+    """The CSV in data/ is the primary source; MongoDB is used as a fallback
+    whenever the CSV is missing (desktop-friendly: works with zero setup)."""
+    if Config.DATA_SOURCE == "mongo":
+        df = _load_from_mongo(Config.MONGO_URI, Config.MONGO_DB, Config.MONGO_COLLECTION)
     else:
         try:
-            df = _load_from_mongo(Config.MONGO_URI, Config.MONGO_DB, Config.MONGO_COLLECTION)
-            if df.empty:
-                raise RuntimeError("MongoDB collection is empty")
-        except Exception as exc:
-            print(f"[kev_analysis] MongoDB unavailable ({exc}); falling back to CSV: {Config.CSV_PATH}")
             df = _load_from_csv(Config.CSV_PATH)
+            if df.empty:
+                raise RuntimeError("CSV file is empty")
+        except Exception as exc:
+            print(f"[kev_analysis] CSV unavailable ({exc}); falling back to MongoDB: {Config.MONGO_URI}")
+            df = _load_from_mongo(Config.MONGO_URI, Config.MONGO_DB, Config.MONGO_COLLECTION)
 
     for col in RAW_COLUMNS:
         if col not in df.columns:
