@@ -21,14 +21,13 @@ python app.py   # http://localhost:5000
 
 MongoDB 없이도 바로 실행됩니다 (아래 참고).
 
-## 데이터 소스: MongoDB 기본 + CSV 백업
+## 데이터 소스: CSV 기본 + MongoDB 폴백
 
 `.env`의 `DATA_SOURCE`로 제어합니다.
 
-- `mongo` (기본값) — 로컬 MongoDB(`MONGO_URI`/`MONGO_DB`/`MONGO_COLLECTION`)에서 읽습니다.
-  **Mongo가 꺼져 있거나 컬렉션이 비어 있으면 자동으로 CSV로 폴백**하므로, Mongo를 아직
-  설정하지 않았어도 바로 앱을 켜볼 수 있습니다.
-- `csv` — CSV만 사용하도록 강제합니다.
+- `csv` (기본값) — `data/known_exploited_vulnerabilities.csv`(경로는 `KEV_CSV_PATH`로 조정 가능)에서 읽습니다.
+  **CSV 파일이 없거나 비어 있으면 자동으로 MongoDB(`MONGO_URI`/`MONGO_DB`/`MONGO_COLLECTION`)로 폴백**합니다.
+- `mongo` — MongoDB만 사용하도록 강제합니다.
 
 MongoDB를 쓰려면 먼저 CSV를 한 번 적재하세요:
 

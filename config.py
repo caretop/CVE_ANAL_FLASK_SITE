@@ -4,9 +4,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class Config:
-    # "mongo" (default) or "csv". Mongo is primary; if it's unreachable or
-    # empty, analysis/kev_analysis.py automatically falls back to the CSV.
-    DATA_SOURCE = os.environ.get("DATA_SOURCE", "mongo").strip().lower()
+    # "csv" (default) or "mongo". CSV is primary; if it's missing or empty,
+    # analysis/kev_analysis.py automatically falls back to MongoDB.
+    DATA_SOURCE = os.environ.get("DATA_SOURCE", "csv").strip().lower()
 
     CSV_PATH = os.environ.get(
         "KEV_CSV_PATH",
