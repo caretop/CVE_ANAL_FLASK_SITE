@@ -74,17 +74,26 @@ def _load_from_csv(path):
 def _load_from_mongo(uri, db_name, collection_name):
     from pymongo import MongoClient
 
-    client = MongoClient(uri, serverSelectionTimeoutMS=5000)
+    client = MongoClient(uri, serverSelectionTimeoutMS=2000)
     collection = client[db_name][collection_name]
     records = list(collection.find({}, {"_id": 0}))
     return pd.DataFrame(records)
 
 
 def load_raw_dataframe():
-    if Config.DATA_SOURCE == "mongo":
-        df = _load_from_mongo(Config.MONGO_URI, Config.MONGO_DB, Config.MONGO_COLLECTION)
-    else:
+    """MongoDB is the primary source; the CSV in data/ is used as a backup
+    whenever Mongo is not running or the collection hasn't been seeded yet
+    (desktop-friendly: no Mongo setup required just to try the app)."""
+    if Config.DATA_SOURCE == "csv":
         df = _load_from_csv(Config.CSV_PATH)
+    else:
+        try:
+            df = _load_from_mongo(Config.MONGO_URI, Config.MONGO_DB, Config.MONGO_COLLECTION)
+            if df.empty:
+                raise RuntimeError("MongoDB collection is empty")
+        except Exception as exc:
+            print(f"[kev_analysis] MongoDB unavailable ({exc}); falling back to CSV: {Config.CSV_PATH}")
+            df = _load_from_csv(Config.CSV_PATH)
 
     for col in RAW_COLUMNS:
         if col not in df.columns:

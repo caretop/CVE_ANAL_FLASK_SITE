@@ -4,8 +4,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class Config:
-    # "csv" or "mongo" - lets the same analysis code run off either store.
-    DATA_SOURCE = os.environ.get("DATA_SOURCE", "csv").strip().lower()
+    # "mongo" (default) or "csv". Mongo is primary; if it's unreachable or
+    # empty, analysis/kev_analysis.py automatically falls back to the CSV.
+    DATA_SOURCE = os.environ.get("DATA_SOURCE", "mongo").strip().lower()
 
     CSV_PATH = os.environ.get(
         "KEV_CSV_PATH",

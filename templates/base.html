@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}CISA KEV Dashboard{% endblock %}</title>
+  <title>{% block title %}CISA KEV 대시보드{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <script src="{{ url_for('static', filename='js/vendor/chart.umd.js') }}"></script>
   {% block head %}{% endblock %}
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="{{ url_for('main.index') }}">CISA KEV Dashboard</a>
+      <a class="brand" href="{{ url_for('main.index') }}">CISA KEV 대시보드</a>
       <nav class="nav-links">
-        <a href="{{ url_for('main.index') }}">Dashboard</a>
-        <a href="{{ url_for('main.vulnerabilities') }}">Vulnerabilities</a>
+        <a href="{{ url_for('main.index') }}">대시보드</a>
+        <a href="{{ url_for('main.vulnerabilities') }}">취약점 검색</a>
       </nav>
     </div>
   </header>
