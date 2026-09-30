@@ -1,10 +1,9 @@
 # CISA KEV Dashboard (Flask)
 
-데스크탑에서 바로 돌리는 단순한 Flask 서버입니다. CISA Known Exploited Vulnerabilities
-(KEV) 카탈로그를 pandas로 가공해 KPI/집계/검색 JSON API로 제공하고, 대시보드/검색
+CISA(KEV) 카탈로그를 pandas로 가공해 KPI/집계/검색 JSON API로 제공하고, 대시보드/검색
 목록/CVE 상세 페이지를 렌더링합니다.
 
-**대시보드의 차트/시각화 영역은 의도적으로 빈 틀(placeholder)입니다.** 실제 차트
+**대시보드의 차트/시각화 영역은 의도적으로 빈 틀입니다.** 실제 차트
 구현은 별도 파트에서 진행하며, 각 영역이 쓸 데이터는 `/api/...` 엔드포인트에서 이미
 제공됩니다 (아래 API 표 참고). `templates/index.html`의 `.chart-placeholder`
 영역에 원하는 라이브러리로 차트를 붙이면 됩니다.
